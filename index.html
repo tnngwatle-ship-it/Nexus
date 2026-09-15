@@ -28,54 +28,83 @@
 <main class="page">
   <div class="container">
     <header class="page-header">
-      <div class="eyebrow">Command Center</div>
-      <h1 id="greeting">Good evening.</h1>
-      <p id="greeting-sub">A quick overview of everything happening inside NEXUS.</p>
+      <div class="eyebrow">Overview</div>
+      <h1>Dashboard</h1>
+      <p>Welcome to NEXUS. Here is your daily productivity snapshot.</p>
     </header>
-    
-<section class="grid dashboard-grid">
-  <a class="card card-link" href="tasks.html">
-    <div class="card-title">
-      <h2>Task Progress</h2>
-      <span class="badge">7 tasks</span></div>
-    <span class="stat-number" id="task-percent">0%</span>
-    <div class="progress"><span></span></div>
-    <p>Track today's completed and remaining tasks.</p>
-  </a>
-  <a class="card card-link" href="goals.html">
-    <div class="card-title"><h2>Goals</h2><span class="badge success">On track</span></div>
-    <span class="stat-number" id="goals-count">0</span>
-    <p>Active goals with milestones waiting for progress.</p>
-  </a>
-  <a class="card card-link" href="planner.html">
-    <div class="card-title"><h2>Upcoming Deadlines</h2><span class="badge warning">2 today</span></div>
-    <span class="stat-number" id="deadlines">0</span>
-    <p>Review scheduled work and upcoming deadlines.</p>
-  </a>
-  <a class="card card-link" href="focus.html">
-    <div class="card-title"><h2>Focus Statistics</h2><span class="badge">2h 14m</span></div>
-    <span class="stat-number" id="focus-count">0</span>
-    <p>Focus sessions completed today.</p>
-  </a>
-  <div class="card">
-    <div class="card-title"><h2>Daily Overview</h2><span class="badge">Today</span></div>
-    <ul class="list">
-      <li class="list-item"><span>Tasks remaining</span><strong>4</strong></li>
-      <li class="list-item"><span>Goals completed</span><strong>68%</strong></li>
-      <li class="list-item"><span>Focus sessions</span><strong>4</strong></li>
-    </ul>
-    <p class="muted">This will become dynamic once the other modules are connected.</p>
-  </div>
-  <div class="card">
-    <div class="card-title"><h2>Quick Actions</h2></div>
-    <div class="actions">
-      <a class="btn primary" href="tasks.html">New Task</a>
-      <a class="btn" href="notes.html">New Note</a>
-      <a class="btn" href="focus.html">Start Focus</a>
-    </div>
-  </div>
-</section>
 
+    <div class="grid dashboard-grid">
+      <!-- Task Progress -->
+      <section class="card">
+        <div class="card-title">
+          <h2>Task Progress</h2>
+          <span class="badge" id="dash-task-badge">0 tasks</span>
+        </div>
+        <div class="stat-number" id="dash-task-percent">0%</div>
+        <div class="progress"><span id="dash-task-bar" style="width: 0%;"></span></div>
+        <p>Track today's completed and remaining tasks.</p>
+      </section>
+
+      <!-- Goals -->
+      <section class="card">
+        <div class="card-title">
+          <h2>Goals</h2>
+          <span class="badge success" id="dash-goal-badge">On track</span>
+        </div>
+        <div class="stat-number" id="dash-active-goals">0</div>
+        <p>Active goals with milestones waiting for progress.</p>
+      </section>
+
+      <!-- Upcoming Deadlines -->
+      <section class="card">
+        <div class="card-title">
+          <h2>Upcoming Deadlines</h2>
+          <span class="badge warning" id="dash-deadline-badge">0 today</span>
+        </div>
+        <div class="stat-number" id="dash-deadline-count">0</div>
+        <p>Review scheduled work and upcoming deadlines.</p>
+      </section>
+
+      <!-- Focus Statistics -->
+      <section class="card">
+        <div class="card-title">
+          <h2>Focus Statistics</h2>
+          <span class="badge" id="dash-focus-time">0m</span>
+        </div>
+        <div class="stat-number" id="dash-focus-count">0</div>
+        <p>Focus sessions completed today.</p>
+      </section>
+
+      <!-- Daily Overview -->
+      <section class="card">
+        <div class="card-title">
+          <h2>Daily Overview</h2>
+          <span class="badge">Today</span>
+        </div>
+        <div class="list">
+          <div class="list-item">
+            <span>Tasks remaining</span>
+            <strong id="dash-tasks-remaining">0</strong>
+          </div>
+          <div class="list-item">
+            <span>Goals completed</span>
+            <strong id="dash-goals-completed">0%</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Actions -->
+      <section class="card">
+        <div class="card-title">
+          <h2>Quick Actions</h2>
+        </div>
+        <div class="actions" style="margin-top: 15px;">
+          <a href="tasks.html" class="btn primary">New Task</a>
+          <a href="notes.html" class="btn">New Note</a>
+          <a href="focus.html" class="btn">Start Focus</a>
+        </div>
+      </section>
+    </div>
   </div>
 </main>
 
