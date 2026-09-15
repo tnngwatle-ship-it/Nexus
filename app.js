@@ -953,3 +953,53 @@ function escapeHTML(str) {
     '"': "&quot;"
   }[tag] || tag));
 }
+
+//Dashboard render
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("dash-task-percent")) {
+    renderDashboard();
+  }
+});
+
+function renderDashboard() {
+  // Fetch user data or fallback to clean empty arrays/objects
+  const tasks = JSON.parse(localStorage.getItem("nexus_tasks")) || [];
+  const goals = JSON.parse(localStorage.getItem("nexus_goals")) || [];
+  const focusStats = JSON.parse(localStorage.getItem("nexus_focus_stats")) || { count: 0, totalMinutes: 0 };
+  const plannerEvents = JSON.parse(localStorage.getItem("nexus_planner_events")) || [];
+
+  // 1. Task Progress Calculations
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter(t => t.completed).length;
+  const remainingTasks = totalTasks - completedTasks;
+  const taskPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  document.getElementById("dash-task-badge").textContent = `${totalTasks} tasks`;
+  document.getElementById("dash-task-percent").textContent = `${taskPercent}%`;
+  document.getElementById("dash-task-bar").style.width = `${taskPercent}%`;
+  document.getElementById("dash-tasks-remaining").textContent = remainingTasks;
+
+  // 2. Goals Calculations
+  const activeGoals = goals.filter(g => !g.completed).length;
+  const completedGoals = goals.filter(g => g.completed).length;
+  const goalPercent = goals.length > 0 ? Math.round((completedGoals / goals.length) * 100) : 0;
+
+  document.getElementById("dash-active-goals").textContent = activeGoals;
+  document.getElementById("dash-goals-completed").textContent = `${goalPercent}%`;
+
+  // 3. Upcoming Deadlines (Today)
+  const todayStr = new Date().toISOString().split("T")[0];
+  const todayDeadlines = plannerEvents.filter(e => e.date === todayStr && e.type === "deadline").length;
+
+  document.getElementById("dash-deadline-badge").textContent = `${todayDeadlines} today`;
+  document.getElementById("dash-deadline-count").textContent = todayDeadlines;
+
+  // 4. Focus Statistics
+  const focusHours = Math.floor(focusStats.totalMinutes / 60);
+  const focusMins = focusStats.totalMinutes % 60;
+  const timeFormatted = focusHours > 0 ? `${focusHours}h ${focusMins}m` : `${focusMins}m`;
+
+  document.getElementById("dash-focus-count").textContent = focusStats.count || 0;
+  document.getElementById("dash-focus-time").textContent = timeFormatted;
+}
