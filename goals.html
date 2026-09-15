@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NEXUS personal command center">
+  <title>Goals | NEXUS</title>
+  <link rel="stylesheet" href="nexus.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container navbar">
+    <a class="brand" href="index.html">NE<span>X</span>US</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="goals.html">Goals</a>
+      <a href="focus.html">Focus</a>
+      <a href="analytics.html">Analytics</a>
+      <a href="notes.html">Notes</a>
+      <a href="planner.html">Planner</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <div class="container">
+    <header class="page-header">
+      <div class="eyebrow">Progress</div>
+      <h1>Goals</h1>
+      <p>Turn long-term objectives into measurable milestones.</p>
+    </header>
+    
+    <!-- Dynamic container where JavaScript renders goal cards -->
+    <section id="goals-container" class="grid three-grid"></section>
+
+    <!-- Create Goal Form -->
+    <section class="card" style="margin-top:22px">
+      <div class="card-title"><h2>Create Goal</h2></div>
+      <form class="form-grid" id="goal-form">
+        <div class="field">
+          <label for="goal-name">Goal name</label>
+          <input id="goal-name" required placeholder="e.g. Master JavaScript">
+        </div>
+        <div class="field">
+          <label for="goal-deadline">Deadline</label>
+          <input id="goal-deadline" type="date">
+        </div>
+        <div class="field full">
+          <label for="goal-description">Description</label>
+          <textarea id="goal-description" placeholder="Short summary of this goal..."></textarea>
+        </div>
+        <div class="field full">
+          <button class="btn primary" type="submit">Create Goal</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</main>
+
+
+
+<footer class="site-footer">
+  <div class="container"><i>NEXUS:</i>Never Miss Your Routine</div>
+</footer>
+<script src="app.js"></script>
+
+</body>
+</html>

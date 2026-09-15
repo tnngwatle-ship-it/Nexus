@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NEXUS personal command center settings">
+  <title>Settings | NEXUS</title>
+  <link rel="stylesheet" href="nexus.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container navbar">
+    <a class="brand" href="index.html">NE<span>X</span>US</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="goals.html">Goals</a>
+      <a href="focus.html">Focus</a>
+      <a href="analytics.html">Analytics</a>
+      <a href="notes.html">Notes</a>
+      <a href="planner.html">Planner</a>
+      <a class="active" href="settings.html">Settings</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <div class="container">
+    <header class="page-header">
+      <div class="eyebrow">Preferences</div>
+      <h1>Settings</h1>
+      <p>Configure interface styling, operational rules, and workspace data backups.</p>
+    </header>
+
+    <div class="grid dashboard-grid">
+      <!-- Section 1: Appearance & Styling -->
+      <section class="card">
+        <div class="card-title">
+          <h2>Appearance</h2>
+          <span class="badge">Theme</span>
+        </div>
+        <form id="appearance-form" class="form-grid" style="margin-top: 16px;">
+          <div class="field">
+            <label for="theme">Interface Theme</label>
+            <select id="theme" class="form-control">
+              <option value="dark">Dark Mode</option>
+              <option value="light">Light Mode</option>
+              <option value="system">System Default</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="accent">Accent Color</label>
+            <select id="accent" class="form-control">
+              <option value="purple">Purple (Default)</option>
+              <option value="blue">Electric Blue</option>
+              <option value="green">Emerald Green</option>
+            </select>
+          </div>
+        </form>
+      </section>
+
+      <!-- Section 2: Preferences & Toggles -->
+      <section class="card">
+        <div class="card-title">
+          <h2>System Behavior</h2>
+        </div>
+        <div class="list" style="margin-top: 16px;">
+          <label class="list-item" style="cursor: pointer;">
+            <div>
+              <strong>24-Hour Clock Format</strong>
+              <div class="muted" style="font-size: 0.85rem;">Display time as 14:00 instead of 2:00 PM</div>
+            </div>
+            <input type="checkbox" id="time-format" />
+          </label>
+
+          <label class="list-item" style="cursor: pointer;">
+            <div>
+              <strong>Reduce Motion</strong>
+              <div class="muted" style="font-size: 0.85rem;">Disable smooth animations and page transitions</div>
+            </div>
+            <input type="checkbox" id="reduce-motion" />
+          </label>
+
+          <label class="list-item" style="cursor: pointer;">
+            <div>
+              <strong>Show Completed Tasks</strong>
+              <div class="muted" style="font-size: 0.85rem;">Keep finished task items visible in lists</div>
+            </div>
+            <input type="checkbox" id="show-completed" />
+          </label>
+        </div>
+      </section>
+    </div>
+
+    <!-- Section 3: Local Storage & Workspace Backup -->
+    <section class="card" style="margin-top: 22px;">
+      <div class="card-title">
+        <h2>Data Management</h2>
+        <span class="badge warning">Browser Storage</span>
+      </div>
+      <p class="muted" style="margin-top: 8px;">
+        Export your complete workspace state to JSON for backup, or restore data from an existing configuration file.
+      </p>
+
+      <div class="actions" style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <button class="btn primary" data-action="export-data">Export JSON Backup</button>
+        <button class="btn" data-action="import-data">Import JSON Backup</button>
+        <button class="btn danger" data-action="clear-data" style="margin-left: auto;">Reset All Workspace Data</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container"><i>NEXUS:</i> Never Miss Your Routine</div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

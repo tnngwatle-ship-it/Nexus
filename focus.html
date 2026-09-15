@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NEXUS personal command center">
+  <title>Focus | NEXUS</title>
+  <link rel="stylesheet" href="nexus.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container navbar">
+    <a class="brand" href="index.html">NE<span>X</span>US</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="goals.html">Goals</a>
+      <a href="focus.html">Focus</a>
+      <a href="analytics.html">Analytics</a>
+      <a href="notes.html">Notes</a>
+      <a href="planner.html">Planner</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <div class="container">
+    <header class="page-header">
+      <div class="eyebrow">Deep Work</div>
+      <h1>Focus Mode</h1>
+      <p>Work in focused sessions and track the time you invest.</p>
+    </header>
+    
+<section class="card timer">
+  <div class="eyebrow">Focus session</div>
+  <h2>Deep Work</h2>
+  <div class="timer-ring">
+    <div class="timer-display" id="timer">25:00</div>
+  </div>
+  <p>Current task: <strong>Build NEXUS JavaScript logic</strong></p>
+  <div class="actions" style="justify-content:center;margin-top:22px">
+    <button class="btn primary" data-action="start-timer">Start</button>
+    <button class="btn" data-action="pause-timer">Pause</button>
+    <button class="btn" data-action="reset-timer">Reset</button>
+  </div>
+</section>
+<section class="grid three-grid" style="margin-top:22px">
+  <div class="card"><span class="muted">Today's focus</span><span class="stat-number">2h 14m</span></div>
+  <div class="card"><span class="muted">Sessions</span><span class="stat-number">4</span></div>
+  <div class="card"><span class="muted">Current streak</span><span class="stat-number">7 days</span></div>
+</section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container"><i>NEXUS:</i>Never Miss Your Routine</div>
+</footer>
+<script src="app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NEXUS personal command center">
+  <title>Tasks | NEXUS</title>
+  <link rel="stylesheet" href="nexus.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container navbar">
+    <a class="brand" href="index.html">NE<span>X</span>US</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="goals.html">Goals</a>
+      <a href="focus.html">Focus</a>
+      <a href="analytics.html">Analytics</a>
+      <a href="notes.html">Notes</a>
+      <a href="planner.html">Planner</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <div class="container">
+    <header class="page-header">
+      <div class="eyebrow">Task Management</div>
+      <h1>Task Manager</h1>
+      <p>Create, organize and complete the work that moves your goals forward.</p>
+    </header>
+    
+<section class="card">
+  <div class="card-title"><h2>Task Manager</h2>
+    <button class="btn primary" type="button" data-action="new-task">+ New Task</button>
+  </div>
+  <div class="form-grid">
+    <div class="field">
+      <label for="task-search">Search tasks</label>
+      <input id="task-search" type="search" placeholder="Search by title...">
+    </div>
+    <div class="field">
+      <label for="task-filter">Filter</label>
+      <select id="task-filter">
+        <option>All</option>
+        <option>Today</option>
+        <option>Upcoming</option>
+        <option>Completed</option>
+        <option>Overdue</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- Form to add tasks (place this inside your top card section) -->
+<form id="task-form" style="margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap;">
+  <input id="task-title" type="text" placeholder="Task title..." required style="flex: 2; padding: 8px;">
+  <input id="task-desc" type="text" placeholder="Short description..." style="flex: 3; padding: 8px;">
+  <select id="task-priority" style="padding: 8px;">
+    <option value="High">High Priority</option>
+    <option value="Medium" selected>Medium Priority</option>
+    <option value="Low">Low Priority</option>
+  </select>
+  <button class="btn primary" type="submit">Add Task</button>
+</form>
+
+
+<section id="tasks-container" class="grid three-grid" style="margin-top:22px">
+  <!-- JavaScript will inject cards here -->
+</section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container"><i>NEXUS:</i>Never Miss Your Routine</div>
+</footer>
+<script src="app.js"></script>
+
+</body>
+</html>

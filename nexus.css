@@ -1,0 +1,493 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* ==========================================================================
+   1. ROOT VARIABLES & THEME/ACCENT SYSTEM
+   ========================================================================== */
+:root {
+  /* Default Theme Tokens (Dark Mode Baseline) */
+  --bg: #0b1120;
+  --bg-gradient: radial-gradient(circle at top right, #18233b 0, #0b1120 42%);
+  --surface: #111827;
+  --surface-2: #172033;
+  --surface-card: linear-gradient(145deg, rgba(23,32,51,.96), rgba(15,23,42,.96));
+  --border: #26344a;
+  --border-hover: #3d4d68;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --input-bg: #0d1628;
+  --shadow: 0 18px 45px rgba(0,0,0,.25);
+
+  /* Default Accent Tokens (Purple) */
+  --accent: #8b5cf6;
+  --accent-2: #a78bfa;
+  --badge-bg: #211d3c;
+  --badge-text: #c4b5fd;
+
+  /* Status Colors */
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #fb7185;
+}
+
+/* --- Theme Variations (data-theme) --- */
+
+/* Explicit Dark Theme */
+html[data-theme="dark"] {
+  --bg: #0b1120;
+  --bg-gradient: radial-gradient(circle at top right, #18233b 0, #0b1120 42%);
+  --surface: #111827;
+  --surface-2: #172033;
+  --surface-card: linear-gradient(145deg, rgba(23,32,51,.96), rgba(15,23,42,.96));
+  --border: #26344a;
+  --border-hover: #3d4d68;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --input-bg: #0d1628;
+  --shadow: 0 18px 45px rgba(0,0,0,.25);
+}
+
+/* Light Theme */
+html[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-gradient: radial-gradient(circle at top right, #edf2f7 0, #f8fafc 42%);
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --surface-card: linear-gradient(145deg, #ffffff, #f8fafc);
+  --border: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --text: #0f172a;
+  --muted: #64748b;
+  --input-bg: #ffffff;
+  --shadow: 0 10px 30px rgba(0,0,0,.05);
+}
+
+/* System Preference (Light Mode OS Match) */
+@media (prefers-color-scheme: light) {
+  html[data-theme="system"] {
+    --bg: #f8fafc;
+    --bg-gradient: radial-gradient(circle at top right, #edf2f7 0, #f8fafc 42%);
+    --surface: #ffffff;
+    --surface-2: #f1f5f9;
+    --surface-card: linear-gradient(145deg, #ffffff, #f8fafc);
+    --border: #e2e8f0;
+    --border-hover: #cbd5e1;
+    --text: #0f172a;
+    --muted: #64748b;
+    --input-bg: #ffffff;
+    --shadow: 0 10px 30px rgba(0,0,0,.05);
+  }
+}
+
+/* --- Accent Variations (data-accent) --- */
+
+/* Purple Accent (Default) */
+html[data-accent="purple"] {
+  --accent: #8b5cf6;
+  --accent-2: #a78bfa;
+  --badge-bg: #211d3c;
+  --badge-text: #c4b5fd;
+}
+
+/* Electric Blue Accent */
+html[data-accent="blue"] {
+  --accent: #2563eb;
+  --accent-2: #60a5fa;
+  --badge-bg: #1e293b;
+  --badge-text: #93c5fd;
+}
+
+/* Emerald Green Accent */
+html[data-accent="green"] {
+  --accent: #10b981;
+  --accent-2: #34d399;
+  --badge-bg: #12352c;
+  --badge-text: #6ee7b7;
+}
+
+/* ==========================================================================
+   2. GLOBAL BASE STYLES
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.container {
+  width: min(1180px, 92%);
+  margin: auto;
+}
+
+/* ==========================================================================
+   3. NAVIGATION & HEADER
+   ========================================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(11, 17, 32, 0.88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-theme="light"] .site-header {
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.navbar {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.brand span {
+  color: var(--accent-2);
+}
+
+.nav-links {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav-links a {
+  color: var(--muted);
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-size: 0.9rem;
+  transition: 0.25s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+/* ==========================================================================
+   4. LAYOUT & CARDS
+   ========================================================================== */
+.page {
+  padding: 56px 0 80px;
+}
+
+.page-header {
+  margin-bottom: 30px;
+}
+
+.eyebrow {
+  color: var(--accent-2);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+h1, h2, h3 {
+  font-family: "Space Grotesk", sans-serif;
+  line-height: 1.15;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h2 { font-size: 1.65rem; }
+h3 { font-size: 1.1rem; }
+
+.page-header p,
+.muted {
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  gap: 22px;
+}
+
+.dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.three-grid     { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.four-grid      { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: var(--shadow);
+  transition: transform 0.25s, border-color 0.25s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-hover);
+}
+
+.card-link { display: block; }
+
+.card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.card p {
+  color: var(--muted);
+}
+
+/* ==========================================================================
+   5. COMPONENTS & BUTTONS
+   ========================================================================== */
+.stat-number {
+  display: block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin: 8px 0;
+}
+
+.progress {
+  height: 9px;
+  background: var(--surface-2);
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  width: 68%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: inherit;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--badge-bg);
+  color: var(--badge-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge.success { background: #12352c; color: #6ee7b7; }
+.badge.warning { background: #3a2d10; color: #fcd34d; }
+.badge.danger  { background: #3d1722; color: #fda4af; }
+
+.list {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.list-item:last-child {
+  border-bottom: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  padding: 10px 15px;
+  border-radius: 10px;
+  transition: 0.25s;
+}
+
+.btn:hover {
+  border-color: var(--accent-2);
+  transform: translateY(-1px);
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.btn.danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #ffffff;
+}
+
+.btn.ghost {
+  background: transparent;
+}
+
+/* ==========================================================================
+   6. FORMS & INPUTS
+   ========================================================================== */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+input, textarea, select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text);
+  padding: 12px 13px;
+  outline: none;
+}
+
+textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.13);
+}
+
+/* ==========================================================================
+   7. CALENDAR & INTERACTIVE STATES
+   ========================================================================== */
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.calendar div {
+  min-height: 80px;
+  padding: 10px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.calendar .day-name {
+  min-height: auto;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.calendar .calendar-day {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.calendar .calendar-day:hover {
+  background: var(--surface-2);
+}
+
+.calendar .day-muted {
+  color: var(--muted);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.calendar .today {
+  background: var(--badge-bg);
+  color: var(--badge-text);
+  font-weight: 700;
+}
+
+.calendar .selected {
+  border: 2px solid var(--accent);
+}
+
+/* ==========================================================================
+   8. REDUCE MOTION SETTING OVERRIDE
+   ========================================================================== */
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ==========================================================================
+   9. RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 900px) {
+  .dashboard-grid, .three-grid { grid-template-columns: 1fr; }
+  .four-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .navbar { align-items: flex-start; padding: 14px 0; flex-direction: column; }
+  .nav-links { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; width: 100%; }
+}
+
+@media (max-width: 600px) {
+  .page { padding: 40px 0 60px; }
+  .four-grid, .form-grid { grid-template-columns: 1fr; }
+  .field.full { grid-column: auto; }
+  .card { padding: 20px; }
+  .calendar div { min-height: 60px; padding: 7px; font-size: 0.8rem; }
+}
