@@ -17,7 +17,7 @@
       <a href="tasks.html">Tasks</a>
       <a href="goals.html">Goals</a>
       <a href="focus.html">Focus</a>
-      <a href="analytics.html">Analytics</a>
+      <a class="active" href="analytics.html">Analytics</a>
       <a href="notes.html">Notes</a>
       <a href="planner.html">Planner</a>
       <a href="settings.html">Settings</a>
@@ -33,37 +33,70 @@
       <p>Turn your activity into useful progress information.</p>
     </header>
     
-<section class="grid four-grid">
-  <div class="card"><span class="muted">Tasks completed</span><span class="stat-number">42</span></div>
-  <div class="card"><span class="muted">Focus time</span><span class="stat-number">18h</span></div>
-  <div class="card"><span class="muted">Current streak</span><span class="stat-number">7</span></div>
-  <div class="card"><span class="muted">Completion rate</span><span class="stat-number">84%</span></div>
-</section>
-<section class="card" style="margin-top:22px">
-  <div class="card-title"><h2>Weekly Activity</h2><span class="badge">Placeholder</span></div>
-  <div class="grid three-grid">
-    <div><p>Mon</p><div class="progress"><span style="width:70%"></span></div></div>
-    <div><p>Tue</p><div class="progress"><span style="width:90%"></span></div></div>
-    <div><p>Wed</p><div class="progress"><span style="width:55%"></span></div></div>
-    <div><p>Thu</p><div class="progress"><span style="width:80%"></span></div></div>
-    <div><p>Fri</p><div class="progress"><span style="width:45%"></span></div></div>
-    <div><p>Sat</p><div class="progress"><span style="width:65%"></span></div></div>
-  </div>
-</section>
-<section class="card" style="margin-top:22px">
-  <div class="card-title"><h2>Activity History</h2></div>
-  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Tasks</th><th>Focus</th><th>Completion</th></tr></thead><tbody>
-  <tr><td>Today</td><td>7</td><td>2h 14m</td><td>84%</td></tr>
-  <tr><td>Yesterday</td><td>5</td><td>1h 40m</td><td>71%</td></tr>
-  <tr><td>Monday</td><td>8</td><td>2h 30m</td><td>90%</td></tr>
-  </tbody></table></div>
-</section>
+    <!-- Top Stats Bar -->
+    <section class="grid four-grid">
+      <div class="card">
+        <span class="muted">Tasks completed</span>
+        <span class="stat-number" id="analytics-tasks-completed">0</span>
+      </div>
+      <div class="card">
+        <span class="muted">Focus time</span>
+        <span class="stat-number" id="analytics-focus-time">0m</span>
+      </div>
+      <div class="card">
+        <span class="muted">Current streak</span>
+        <span class="stat-number" id="analytics-streak">0d</span>
+      </div>
+      <div class="card">
+        <span class="muted">Completion rate</span>
+        <span class="stat-number" id="analytics-completion-rate">0%</span>
+      </div>
+    </section>
+
+    <!-- Weekly Activity Progress -->
+    <section class="card" style="margin-top:22px">
+      <div class="card-title">
+        <h2>Weekly Activity</h2>
+        <span class="badge success">Live Summary</span>
+      </div>
+      <div class="grid three-grid" id="weekly-activity-grid">
+        <div><p>Mon</p><div class="progress"><span id="bar-mon" style="width:0%"></span></div></div>
+        <div><p>Tue</p><div class="progress"><span id="bar-tue" style="width:0%"></span></div></div>
+        <div><p>Wed</p><div class="progress"><span id="bar-wed" style="width:0%"></span></div></div>
+        <div><p>Thu</p><div class="progress"><span id="bar-thu" style="width:0%"></span></div></div>
+        <div><p>Fri</p><div class="progress"><span id="bar-fri" style="width:0%"></span></div></div>
+        <div><p>Sat</p><div class="progress"><span id="bar-sat" style="width:0%"></span></div></div>
+        <div><p>Sun</p><div class="progress"><span id="bar-sun" style="width:0%"></span></div></div>
+      </div>
+    </section>
+
+    <!-- Activity History Table -->
+    <section class="card" style="margin-top:22px">
+      <div class="card-title">
+        <h2>Activity History</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Tasks</th>
+              <th>Focus</th>
+              <th>Completion</th>
+            </tr>
+          </thead>
+          <tbody id="activity-history-body">
+            <!-- Dynamic rows inserted via app.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
 
   </div>
 </main>
 
 <footer class="site-footer">
-  <div class="container"><i>NEXUS:</i>Never Miss Your Routine</div>
+  <div class="container"><i>NEXUS:</i> Never Miss Your Routine</div>
 </footer>
 <script src="app.js"></script>
 
