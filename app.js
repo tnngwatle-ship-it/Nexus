@@ -419,153 +419,61 @@ function saveAndRenderNotes() {
   renderNotesList(notes);
 }
 
-// Focus Timer State
-let timerInterval = null;
-let totalSeconds = 25 * 60;
-let remainingSeconds = 25 * 60;
-let isRunning = false;
-
-// Stored Stats
-let focusStats = JSON.parse(localStorage.getItem("nexus_focus_stats")) || {
-  sessionsCompleted: 0,
-  totalMinutes: 0,
-  streak: 1
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-  const timerEl = document.getElementById("timer");
-  if (timerEl) {
-    initFocusTimer();
-    renderFocusStats();
-  }
-});
-
-
-function initFocusTimer() {
-  const startBtn = document.querySelector('[data-action="start-timer"]');
-  const pauseBtn = document.querySelector('[data-action="pause-timer"]');
-  const resetBtn = document.querySelector('[data-action="reset-timer"]');
-
-  startBtn?.addEventListener("click", startTimer);
-  pauseBtn?.addEventListener("click", pauseTimer);
-  resetBtn?.addEventListener("click", resetTimer);
-
-  updateTimerUI();
-}
-
-
-function startTimer() {
-  if (isRunning) return;
-
-  isRunning = true;
-  timerInterval = setInterval(() => {
-    remainingSeconds--;
-    updateTimerUI();
-
-    if (remainingSeconds <= 0) {
-      clearInterval(timerInterval);
-      isRunning = false;
-      handleSessionComplete();
-    }
-  }, 1000);
-}
-
-function pauseTimer() {
-  if (!isRunning) return;
-  clearInterval(timerInterval);
-  isRunning = false;
-}
-
-function resetTimer() {
-  clearInterval(timerInterval);
-  isRunning = false;
-  remainingSeconds = totalSeconds;
-  updateTimerUI();
-}
-
-/**
- * 3. COMPLETE SESSION & UPDATE LOCALSTORAGE
- */
-function handleSessionComplete() {
-  alert("Focus session complete! Excellent work.");
-
-  focusStats.sessionsCompleted += 1;
-  focusStats.totalMinutes += 25;
-
-  // Save to LocalStorage so index.html dashboard syncs
-  localStorage.setItem("nexus_focus_stats", JSON.stringify(focusStats));
-  localStorage.setItem("nexus_focus_count", JSON.stringify(focusStats.sessionsCompleted));
-
-  renderFocusStats();
-  resetTimer();
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("timer")) {
-    initFocusTimer();
+    initActivityTracker();
   }
 });
 
-function initFocusTimer() {
-  const DEFAULT_SECONDS = 25 * 60; // 25 minutes
-  let timeLeft = DEFAULT_SECONDS;
+function initActivityTracker() {
+  let secondsElapsed = 0;
   let timerInterval = null;
   let isRunning = false;
 
   const timerDisplay = document.getElementById("timer");
+  const activitySelect = document.getElementById("activity-type-select");
   const taskInput = document.getElementById("focus-task-input");
+  const titleDisplay = document.getElementById("focus-title-display");
   const currentTaskLabel = document.getElementById("focus-current-task");
-  
+
   const startBtn = document.getElementById("btn-start");
   const pauseBtn = document.getElementById("btn-pause");
+  const finishBtn = document.getElementById("btn-finish");
   const resetBtn = document.getElementById("btn-reset");
 
-  // 1. Sync Task Input
-  taskInput.addEventListener("input", (e) => {
-    const val = e.target.value.trim();
-    currentTaskLabel.textContent = val !== "" ? val : "No task set";
-  });
-
-  // 2. Format Seconds -> MM:SS
-  function formatTime(secs) {
-    const m = Math.floor(secs / 60).toString().padStart(2, "0");
-    const s = (secs % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
+  // Sync Category Select & Input Display
+  function updateTaskLabel() {
+    const category = activitySelect.value;
+    const detail = taskInput.value.trim();
+    
+    titleDisplay.textContent = category === "Custom" ? (detail || "Custom Task") : category;
+    
+    if (detail) {
+      currentTaskLabel.textContent = `${category} (${detail})`;
+    } else {
+      currentTaskLabel.textContent = category;
+    }
   }
 
-  // 3. Render Dashboard Stats
-  function updateFocusStatsUI() {
-    const stats = JSON.parse(localStorage.getItem("nexus_focus_stats")) || { count: 0, totalMinutes: 0 };
-    const history = JSON.parse(localStorage.getItem("nexus_history")) || [];
+  activitySelect.addEventListener("change", updateTaskLabel);
+  taskInput.addEventListener("input", updateTaskLabel);
 
-    const hours = Math.floor(stats.totalMinutes / 60);
-    const mins = stats.totalMinutes % 60;
-    
-    document.getElementById("focus-today-time").textContent = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
-    document.getElementById("focus-today-sessions").textContent = stats.count || 0;
-    
-    // Streak count
-    const streak = history.filter(h => h.focusMinutes > 0).length;
-    document.getElementById("focus-streak").textContent = `${streak} days`;
+  // Time Formatter (HH:MM:SS)
+  function formatTime(totalSecs) {
+    const h = Math.floor(totalSecs / 3600).toString().padStart(2, "0");
+    const m = Math.floor((totalSecs % 3600) / 60).toString().padStart(2, "0");
+    const s = (totalSecs % 60).toString().padStart(2, "0");
+    return `${h}:${m}:${s}`;
   }
 
-  // 4. Timer Controls
+  // Stopwatch Logic
   function startTimer() {
     if (isRunning) return;
     isRunning = true;
 
     timerInterval = setInterval(() => {
-      if (timeLeft > 0) {
-        timeLeft--;
-        timerDisplay.textContent = formatTime(timeLeft);
-      } else {
-        // Session Complete
-        clearInterval(timerInterval);
-        isRunning = false;
-        recordCompletedSession();
-        alert(`Focus session complete for: ${taskInput.value || "Deep Work"}`);
-        resetTimer();
-      }
+      secondsElapsed++;
+      timerDisplay.textContent = formatTime(secondsElapsed);
     }, 1000);
   }
 
@@ -576,59 +484,90 @@ function initFocusTimer() {
 
   function resetTimer() {
     pauseTimer();
-    timeLeft = DEFAULT_SECONDS;
-    timerDisplay.textContent = formatTime(timeLeft);
+    secondsElapsed = 0;
+    timerDisplay.textContent = "00:00:00";
   }
 
-  // 5. Save Progress to Local Storage
-  function recordCompletedSession() {
+  // Finish & Instantly Record to Storage
+  function finishAndRecord() {
+    if (secondsElapsed < 5) {
+      alert("Session too short to record.");
+      return;
+    }
+
+    pauseTimer();
+
+    const category = activitySelect.value;
+    const detail = taskInput.value.trim();
+    const finalTaskName = detail ? `${category}: ${detail}` : category;
+    
+    // Convert duration into rounded minutes for stats
+    const minutesSpent = Math.max(1, Math.round(secondsElapsed / 60));
+
+    // 1. Update Global Focus Stats
     const stats = JSON.parse(localStorage.getItem("nexus_focus_stats")) || { count: 0, totalMinutes: 0 };
     stats.count += 1;
-    stats.totalMinutes += 25; // Standard 25-min session
-    
+    stats.totalMinutes += minutesSpent;
     localStorage.setItem("nexus_focus_stats", JSON.stringify(stats));
-    updateFocusStatsUI();
+
+    // 2. Append Activity Entry
+    const logs = JSON.parse(localStorage.getItem("nexus_focus_logs")) || [];
+    logs.unshift({
+      category: category,
+      details: detail || "-",
+      timeFormatted: formatTime(secondsElapsed),
+      minutes: minutesSpent,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+    localStorage.setItem("nexus_focus_logs", JSON.stringify(logs));
+
+    // 3. Reset Timer & Refresh Table/Stats
+    resetTimer();
+    taskInput.value = "";
+    updateTaskLabel();
+    renderActivityUI();
+  }
+
+  // Render Table & Summary Cards
+  function renderActivityUI() {
+    const stats = JSON.parse(localStorage.getItem("nexus_focus_stats")) || { count: 0, totalMinutes: 0 };
+    const logs = JSON.parse(localStorage.getItem("nexus_focus_logs")) || [];
+
+    const hours = Math.floor(stats.totalMinutes / 60);
+    const mins = stats.totalMinutes % 60;
+
+    document.getElementById("focus-today-time").textContent = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+    document.getElementById("focus-today-sessions").textContent = stats.count || 0;
+
+    // Render Table Body
+    const tableBody = document.getElementById("focus-logs-body");
+    tableBody.innerHTML = "";
+
+    if (logs.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="4" class="muted" style="text-align:center; padding: 15px;">No activities recorded today yet.</td></tr>`;
+    } else {
+      logs.forEach(log => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><strong>${log.category}</strong></td>
+          <td>${log.details}</td>
+          <td><span class="badge success">${log.timeFormatted}</span></td>
+          <td class="muted">${log.timestamp}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
   }
 
   // Event Listeners
   startBtn.addEventListener("click", startTimer);
   pauseBtn.addEventListener("click", pauseTimer);
+  finishBtn.addEventListener("click", finishAndRecord);
   resetBtn.addEventListener("click", resetTimer);
 
   // Initial Load
-  updateFocusStatsUI();
-}
-
-/**
- * 4. UI RENDER HELPERS
- */
-function updateTimerUI() {
-  const timerDisplay = document.getElementById("timer");
-  if (!timerDisplay) return;
-
-  const mins = Math.floor(remainingSeconds / 60);
-  const secs = remainingSeconds % 60;
-
-  const formatted = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-  timerDisplay.textContent = formatted;
-  
-  // Updates browser tab title with live countdown
-  document.title = isRunning ? `(${formatted}) Focus | NEXUS` : "Focus | NEXUS";
-}
-
-function renderFocusStats() {
-  const statElements = document.querySelectorAll(".three-grid .stat-number");
-  if (statElements.length < 3) return;
-
-  // Calculate formatted time string 
-  const hrs = Math.floor(focusStats.totalMinutes / 60);
-  const mins = focusStats.totalMinutes % 60;
-  const timeFormatted = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
-
-  // Render to your three stats cards in order
-  statElements[0].textContent = timeFormatted;
-  statElements[1].textContent = focusStats.sessionsCompleted;
-  statElements[2].textContent = `${focusStats.streak} days`;
+  renderActivityUI();
+  updateTaskLabel();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
