@@ -500,6 +500,105 @@ function handleSessionComplete() {
   resetTimer();
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("timer")) {
+    initFocusTimer();
+  }
+});
+
+function initFocusTimer() {
+  const DEFAULT_SECONDS = 25 * 60; // 25 minutes
+  let timeLeft = DEFAULT_SECONDS;
+  let timerInterval = null;
+  let isRunning = false;
+
+  const timerDisplay = document.getElementById("timer");
+  const taskInput = document.getElementById("focus-task-input");
+  const currentTaskLabel = document.getElementById("focus-current-task");
+  
+  const startBtn = document.getElementById("btn-start");
+  const pauseBtn = document.getElementById("btn-pause");
+  const resetBtn = document.getElementById("btn-reset");
+
+  // 1. Sync Task Input
+  taskInput.addEventListener("input", (e) => {
+    const val = e.target.value.trim();
+    currentTaskLabel.textContent = val !== "" ? val : "No task set";
+  });
+
+  // 2. Format Seconds -> MM:SS
+  function formatTime(secs) {
+    const m = Math.floor(secs / 60).toString().padStart(2, "0");
+    const s = (secs % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  // 3. Render Dashboard Stats
+  function updateFocusStatsUI() {
+    const stats = JSON.parse(localStorage.getItem("nexus_focus_stats")) || { count: 0, totalMinutes: 0 };
+    const history = JSON.parse(localStorage.getItem("nexus_history")) || [];
+
+    const hours = Math.floor(stats.totalMinutes / 60);
+    const mins = stats.totalMinutes % 60;
+    
+    document.getElementById("focus-today-time").textContent = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+    document.getElementById("focus-today-sessions").textContent = stats.count || 0;
+    
+    // Streak count
+    const streak = history.filter(h => h.focusMinutes > 0).length;
+    document.getElementById("focus-streak").textContent = `${streak} days`;
+  }
+
+  // 4. Timer Controls
+  function startTimer() {
+    if (isRunning) return;
+    isRunning = true;
+
+    timerInterval = setInterval(() => {
+      if (timeLeft > 0) {
+        timeLeft--;
+        timerDisplay.textContent = formatTime(timeLeft);
+      } else {
+        // Session Complete
+        clearInterval(timerInterval);
+        isRunning = false;
+        recordCompletedSession();
+        alert(`Focus session complete for: ${taskInput.value || "Deep Work"}`);
+        resetTimer();
+      }
+    }, 1000);
+  }
+
+  function pauseTimer() {
+    clearInterval(timerInterval);
+    isRunning = false;
+  }
+
+  function resetTimer() {
+    pauseTimer();
+    timeLeft = DEFAULT_SECONDS;
+    timerDisplay.textContent = formatTime(timeLeft);
+  }
+
+  // 5. Save Progress to Local Storage
+  function recordCompletedSession() {
+    const stats = JSON.parse(localStorage.getItem("nexus_focus_stats")) || { count: 0, totalMinutes: 0 };
+    stats.count += 1;
+    stats.totalMinutes += 25; // Standard 25-min session
+    
+    localStorage.setItem("nexus_focus_stats", JSON.stringify(stats));
+    updateFocusStatsUI();
+  }
+
+  // Event Listeners
+  startBtn.addEventListener("click", startTimer);
+  pauseBtn.addEventListener("click", pauseTimer);
+  resetBtn.addEventListener("click", resetTimer);
+
+  // Initial Load
+  updateFocusStatsUI();
+}
+
 /**
  * 4. UI RENDER HELPERS
  */
