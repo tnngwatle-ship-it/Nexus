@@ -16,7 +16,7 @@
       <a href="index.html">Dashboard</a>
       <a href="tasks.html">Tasks</a>
       <a href="goals.html">Goals</a>
-      <a href="focus.html">Focus</a>
+      <a class="active" href="focus.html">Focus</a>
       <a href="analytics.html">Analytics</a>
       <a href="notes.html">Notes</a>
       <a href="planner.html">Planner</a>
@@ -33,30 +33,55 @@
       <p>Work in focused sessions and track the time you invest.</p>
     </header>
     
-<section class="card timer">
-  <div class="eyebrow">Focus session</div>
-  <h2>Deep Work</h2>
-  <div class="timer-ring">
-    <div class="timer-display" id="timer">25:00</div>
-  </div>
-  <p>Current task: <strong>Build NEXUS JavaScript logic</strong></p>
-  <div class="actions" style="justify-content:center;margin-top:22px">
-    <button class="btn primary" data-action="start-timer">Start</button>
-    <button class="btn" data-action="pause-timer">Pause</button>
-    <button class="btn" data-action="reset-timer">Reset</button>
-  </div>
-</section>
-<section class="grid three-grid" style="margin-top:22px">
-  <div class="card"><span class="muted">Today's focus</span><span class="stat-number">2h 14m</span></div>
-  <div class="card"><span class="muted">Sessions</span><span class="stat-number">4</span></div>
-  <div class="card"><span class="muted">Current streak</span><span class="stat-number">7 days</span></div>
-</section>
+    <!-- Main Focus Timer Card -->
+    <section class="card timer" style="text-align: center;">
+      <div class="eyebrow">Focus Session</div>
+      <h2 id="focus-title-display" style="margin-top: 6px;">Deep Work</h2>
+      
+      <!-- Input for Custom Task -->
+      <div class="field" style="max-width: 420px; margin: 18px auto 0;">
+        <input 
+          type="text" 
+          id="focus-task-input" 
+          placeholder="What are you focusing on?" 
+          aria-label="Focus Task Input"
+        >
+      </div>
+
+      <div class="timer-ring" style="margin: 24px 0;">
+        <div class="timer-display" id="timer" style="font-size: 3.5rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif;">25:00</div>
+      </div>
+      
+      <p>Current task: <strong id="focus-current-task" class="muted">No task set</strong></p>
+      
+      <div class="actions" style="justify-content: center; margin-top: 22px;">
+        <button class="btn primary" id="btn-start" data-action="start-timer">Start</button>
+        <button class="btn" id="btn-pause" data-action="pause-timer">Pause</button>
+        <button class="btn" id="btn-reset" data-action="reset-timer">Reset</button>
+      </div>
+    </section>
+
+    <!-- Clean Dynamic Stats Bar -->
+    <section class="grid three-grid" style="margin-top: 22px;">
+      <div class="card">
+        <span class="muted">Today's focus</span>
+        <span class="stat-number" id="focus-today-time">0m</span>
+      </div>
+      <div class="card">
+        <span class="muted">Sessions completed</span>
+        <span class="stat-number" id="focus-today-sessions">0</span>
+      </div>
+      <div class="card">
+        <span class="muted">Current streak</span>
+        <span class="stat-number" id="focus-streak">0 days</span>
+      </div>
+    </section>
 
   </div>
 </main>
 
 <footer class="site-footer">
-  <div class="container"><i>NEXUS:</i>Never Miss Your Routine</div>
+  <div class="container"><i>NEXUS:</i> Never Miss Your Routine</div>
 </footer>
 <script src="app.js"></script>
 
