@@ -440,9 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-/**
- * 1. ATTACH LISTENERS TO YOUR HTML BUTTONS
- */
+
 function initFocusTimer() {
   const startBtn = document.querySelector('[data-action="start-timer"]');
   const pauseBtn = document.querySelector('[data-action="pause-timer"]');
@@ -455,9 +453,7 @@ function initFocusTimer() {
   updateTimerUI();
 }
 
-/**
- * 2. TIMER CORE LOGIC
- */
+
 function startTimer() {
   if (isRunning) return;
 
@@ -525,7 +521,7 @@ function renderFocusStats() {
   const statElements = document.querySelectorAll(".three-grid .stat-number");
   if (statElements.length < 3) return;
 
-  // Calculate formatted time string (e.g. 2h 14m)
+  // Calculate formatted time string 
   const hrs = Math.floor(focusStats.totalMinutes / 60);
   const mins = focusStats.totalMinutes % 60;
   const timeFormatted = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
@@ -588,6 +584,72 @@ function renderAnalytics() {
     todayRowCells[2].textContent = focusTimeDisplay;
     todayRowCells[3].textContent = `${completionRate}%`;
   }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("analytics-tasks-completed")) {
+    renderAnalytics();
+  }
+});
+
+function renderAnalytics() {
+  const tasks = JSON.parse(localStorage.getItem("nexus_tasks")) || [];
+  const focusStats = JSON.parse(localStorage.getItem("nexus_focus_stats")) || { count: 0, totalMinutes: 0 };
+  const history = JSON.parse(localStorage.getItem("nexus_history")) || [];
+
+  // 1. Overall Calculations
+  const completedTasks = tasks.filter(t => t.completed).length;
+  const totalTasks = tasks.length;
+  const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+  
+  const focusHours = Math.floor(focusStats.totalMinutes / 60);
+  const focusMins = focusStats.totalMinutes % 60;
+  const formattedFocus = focusHours > 0 ? `${focusHours}h ${focusMins}m` : `${focusMins}m`;
+
+  document.getElementById("analytics-tasks-completed").textContent = completedTasks;
+  document.getElementById("analytics-focus-time").textContent = formattedFocus;
+  document.getElementById("analytics-completion-rate").textContent = `${completionRate}%`;
+
+  // Streak logic (Calculated from activity history array)
+  const streak = calculateStreak(history);
+  document.getElementById("analytics-streak").textContent = `${streak}d`;
+
+  // 2. Render Activity History Table
+  const historyTableBody = document.getElementById("activity-history-body");
+  historyTableBody.innerHTML = "";
+
+  if (history.length === 0) {
+    historyTableBody.innerHTML = `
+      <tr>
+        <td colspan="4" class="muted" style="text-align:center; padding: 20px;">
+          No recorded activity yet. Complete tasks or focus sessions to log history.
+        </td>
+      </tr>`;
+  } else {
+    history.forEach(entry => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${entry.date}</td>
+        <td>${entry.tasksCompleted}</td>
+        <td>${entry.focusTime}</td>
+        <td>${entry.completionRate}%</td>
+      `;
+      historyTableBody.appendChild(row);
+    });
+  }
+}
+
+function calculateStreak(history) {
+  if (!history.length) return 0;
+  let streak = 0;
+  for (let entry of history) {
+    if (entry.tasksCompleted > 0 || entry.focusMinutes > 0) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+  return streak;
 }
 
 // Global State Default Settings
