@@ -28,52 +28,82 @@
 <main class="page">
   <div class="container">
     <header class="page-header">
-      <div class="eyebrow">Deep Work</div>
-      <h1>Focus Mode</h1>
-      <p>Work in focused sessions and track the time you invest.</p>
+      <div class="eyebrow">Activity Tracker</div>
+      <h1>Focus & Activity Session</h1>
+      <p>Select an activity, track your time, and log the duration instantly when done.</p>
     </header>
     
-    <!-- Main Focus Timer Card -->
+    <!-- Timer & Activity Selector Card -->
     <section class="card timer" style="text-align: center;">
-      <div class="eyebrow">Focus Session</div>
-      <h2 id="focus-title-display" style="margin-top: 6px;">Deep Work</h2>
+      <div class="eyebrow">Active Session</div>
+      <h2 id="focus-title-display" style="margin-top: 6px;">Studying</h2>
       
-      <!-- Input for Custom Task -->
-      <div class="field" style="max-width: 420px; margin: 18px auto 0;">
+      <!-- Category Preset Selector + Custom Task Input -->
+      <div class="field-group" style="max-width: 450px; margin: 18px auto 0; display: flex; gap: 10px;">
+        <select id="activity-type-select" style="padding: 10px; border-radius: 6px;">
+          <option value="Studying">Studying</option>
+          <option value="Running an Errand">Running an Errand</option>
+          <option value="Coding / Development">Coding / Development</option>
+          <option value="Custom">Custom Task...</option>
+        </select>
         <input 
           type="text" 
           id="focus-task-input" 
-          placeholder="What are you focusing on?" 
-          aria-label="Focus Task Input"
+          placeholder="Specific details (e.g., Grocery shopping)" 
+          aria-label="Focus Task Details"
+          style="flex: 1;"
         >
       </div>
 
       <div class="timer-ring" style="margin: 24px 0;">
-        <div class="timer-display" id="timer" style="font-size: 3.5rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif;">25:00</div>
+        <div class="timer-display" id="timer" style="font-size: 3.5rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif;">00:00:00</div>
       </div>
       
-      <p>Current task: <strong id="focus-current-task" class="muted">No task set</strong></p>
+      <p>Tracking: <strong id="focus-current-task">Studying</strong></p>
       
       <div class="actions" style="justify-content: center; margin-top: 22px;">
-        <button class="btn primary" id="btn-start" data-action="start-timer">Start</button>
-        <button class="btn" id="btn-pause" data-action="pause-timer">Pause</button>
-        <button class="btn" id="btn-reset" data-action="reset-timer">Reset</button>
+        <button class="btn primary" id="btn-start">Start Timer</button>
+        <button class="btn" id="btn-pause">Pause</button>
+        <button class="btn success" id="btn-finish" style="background: #10b981; color: #fff; border: none; font-weight: 600;">Finish & Record</button>
+        <button class="btn danger" id="btn-reset">Reset</button>
       </div>
     </section>
 
-    <!-- Clean Dynamic Stats Bar -->
+    <!-- Stat Summaries -->
     <section class="grid three-grid" style="margin-top: 22px;">
       <div class="card">
-        <span class="muted">Today's focus</span>
+        <span class="muted">Today's tracked time</span>
         <span class="stat-number" id="focus-today-time">0m</span>
       </div>
       <div class="card">
-        <span class="muted">Sessions completed</span>
+        <span class="muted">Activities completed</span>
         <span class="stat-number" id="focus-today-sessions">0</span>
       </div>
       <div class="card">
-        <span class="muted">Current streak</span>
+        <span class="muted">Active streak</span>
         <span class="stat-number" id="focus-streak">0 days</span>
+      </div>
+    </section>
+
+    <!-- Activity Log Table -->
+    <section class="card" style="margin-top: 22px;">
+      <div class="card-title">
+        <h2>Logged Activities Today</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Task Details</th>
+              <th>Duration</th>
+              <th>Logged At</th>
+            </tr>
+          </thead>
+          <tbody id="focus-logs-body">
+            <!-- Dynamic session entries inserted via JS -->
+          </tbody>
+        </table>
       </div>
     </section>
 
